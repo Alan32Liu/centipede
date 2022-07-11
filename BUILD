@@ -339,6 +339,9 @@ cc_library(
         "runner_sancov.cc",
     ],
     hdrs = ["runner.h"],
+    # This target must not be sancov-instrumented regardless of the global flags.
+    # NOTE: `nocopts = "-fsanitize-coverage.*"` is unsupported by Bazel.
+    copts = ["-fsanitize-coverage=0"],
     linkopts = ["-ldl"],  # for dlsym
     deps = [
         ":byte_array_mutator",
@@ -357,6 +360,9 @@ cc_library(
 cc_library(
     name = "fuzz_target_runner",
     srcs = ["runner_main.cc"],
+    # This target must not be sancov-instrumented regardless of the global flags.
+    # NOTE: `nocopts = "-fsanitize-coverage.*"` is unsupported by Bazel.
+    copts = ["-fsanitize-coverage=0"],
     visibility = ["//visibility:public"],
     deps = [
         ":fuzz_target_runner_no_main",  # buildcleaner: keep
@@ -392,4 +398,15 @@ cc_library(
         "shared_memory_blob_sequence.cc",
         "shared_memory_blob_sequence.h",
     ],
+    # This target must not be sancov-instrumented regardless of the global flags.
+    # NOTE: `nocopts = "-fsanitize-coverage.*"` is unsupported by Bazel.
+    copts = ["-fsanitize-coverage=0"],
+)
+
+cc_binary(
+    name = "FourIndependentBranchesTest",
+    srcs = ["FourIndependentBranchesTest.cpp"],
+    copts = ["-fsanitize-coverage=trace-pc-guard,trace-cmp"],
+    linkopts = ["-ldl -lrt -lpthread"],
+    deps = ["centipede_runner"],
 )
