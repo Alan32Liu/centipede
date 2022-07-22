@@ -15,7 +15,6 @@
 
 # Tested on Debian GNU/Linux 11 (bullseye)
 #
-# * git: to get the Centipede sources.
 # * bazel: to build Centipede.
 #    You may need to do these steps first:
 #    https://docs.bazel.build/versions/main/install-ubuntu.html
@@ -37,7 +36,12 @@ echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
   | tee /etc/apt/sources.list.d/bazel.list
 apt update
 
-apt install -y bazel binutils clang libssl-dev
+apt install -y bazel binutils libssl-dev
+
+# Get clang-14, the oldest version that supports dataflow tracing
+mkdir /clang
+curl https://commondatastorage.googleapis.com/chromium-browser-clang/Linux_x64/clang-llvmorg-14-init-9436-g65120988-1.tgz -o /clang-14.tgz
+tar zxvf /clang-14.tgz -C /clang
 
 # * TODO(kcc): llvm-symbolizer is required for running Centipede.
 #   it comes with clang, but may be called e.g. llvm-symbolizer-11
