@@ -37,7 +37,7 @@ echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
   | tee /etc/apt/sources.list.d/bazel.list
 apt update
 
-apt install -y git bazel binutils clang libssl-dev
+apt install -y bazel binutils clang libssl-dev
 
 # * TODO(kcc): llvm-symbolizer is required for running Centipede.
 #   it comes with clang, but may be called e.g. llvm-symbolizer-11
