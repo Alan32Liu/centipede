@@ -28,7 +28,16 @@
 #   The functionality currently requiring fresh clang from source:
 #     * -fsanitize-coverage=trace-loads
 #     (https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-data-flow)
-sudo apt-get install git bazel binutils clang libssl-dev
+
+# Add Bazel distribution URI as a package source
+apt install -y curl gnupg
+curl -fsSL https://bazel.build/bazel-release.pub.gpg \
+  | gpg --dearmor > /etc/apt/trusted.gpg.d/bazel.gpg
+echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
+  | tee /etc/apt/sources.list.d/bazel.list
+apt update
+
+apt install -y git bazel binutils clang libssl-dev
 
 # * TODO(kcc): llvm-symbolizer is required for running Centipede.
 #   it comes with clang, but may be called e.g. llvm-symbolizer-11
