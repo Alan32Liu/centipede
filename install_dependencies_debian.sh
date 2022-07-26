@@ -15,9 +15,8 @@
 
 # Tested on Debian GNU/Linux 11 (bullseye)
 #
+# * git: to get the Centipede sources.
 # * bazel: to build Centipede.
-#    You may need to do these steps first:
-#    https://docs.bazel.build/versions/main/install-ubuntu.html
 # * libssl-dev: to link Centipede (it uses SHA1).
 # * binutils: Centipede uses objdump.
 # * clang: to build Centipede and the targets.
@@ -36,7 +35,7 @@ echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
   | tee /etc/apt/sources.list.d/bazel.list
 apt update
 
-apt install -y bazel binutils libssl-dev
+apt install -y git bazel binutils libssl-dev
 
 # Get clang-14, the oldest version that supports dataflow tracing
 mkdir /clang
