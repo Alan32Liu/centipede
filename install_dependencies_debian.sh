@@ -15,6 +15,7 @@
 
 # Tested on Debian GNU/Linux 11 (bullseye)
 #
+# * git: to get the Centipede sources.
 # * bazel: to build Centipede.
 # * libssl-dev: to link Centipede (it uses SHA1).
 # * binutils: Centipede uses objdump.
