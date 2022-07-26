@@ -27,8 +27,9 @@
 #     * -fsanitize-coverage=trace-loads
 #     (https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-data-flow)
 
-# Add Bazel distribution URI as a package source
-apt install -y curl gnupg apt-transport-https
+# Add Bazel distribution URI as a package source following:
+# https://docs.bazel.build/versions/main/install-ubuntu.html
+apt install -y git curl gnupg apt-transport-https
 curl -fsSL https://bazel.build/bazel-release.pub.gpg \
   | gpg --dearmor > /etc/apt/trusted.gpg.d/bazel.gpg
 echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
