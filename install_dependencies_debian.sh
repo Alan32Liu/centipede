@@ -29,7 +29,7 @@
 
 # Add Bazel distribution URI as a package source following:
 # https://docs.bazel.build/versions/main/install-ubuntu.html
-apt install -y git curl gnupg apt-transport-https
+apt install -y curl wget gnupg apt-transport-https
 curl -fsSL https://bazel.build/bazel-release.pub.gpg \
   | gpg --dearmor > /etc/apt/trusted.gpg.d/bazel.gpg
 echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" \
@@ -40,7 +40,7 @@ apt install -y git bazel binutils libssl-dev
 
 # Get clang-14, the oldest version that supports dataflow tracing
 mkdir /clang
-curl https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz -o /clang-14.tar.xz
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz -O /clang-14.tar.xz
 tar -xf /clang-14.tar.xz -C /clang
 
 # * TODO(kcc): llvm-symbolizer is required for running Centipede.
