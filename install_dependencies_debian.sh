@@ -43,8 +43,8 @@ apt install -y git bazel binutils libssl-dev
 #   * Download Clang from Chromium to support old OS (e.g. Ubuntu 16).
 #   * Alternatively, download the fresh Clang from https://releases.llvm.org/
 mkdir /clang
-wget https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz -O /clang-14.tar.xz
-tar -xf /clang-14.tar.xz -C /clang
+curl https://commondatastorage.googleapis.com/chromium-browser-clang/Linux_x64/clang-llvmorg-14-init-9436-g65120988-1.tgz -o /clang-14.tgz
+tar zxvf /clang-14.tgz -C /clang
 
 # * TODO(kcc): llvm-symbolizer is required for running Centipede.
 #   it comes with clang, but may be called e.g. llvm-symbolizer-11
