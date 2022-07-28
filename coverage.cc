@@ -119,6 +119,8 @@ Coverage::PCTable Coverage::GetPcTableFromBinary(std::string_view binary_path,
 
 Coverage::PCTable Coverage::GetPcTableFromBinaryWithPcTable(
     std::string_view binary_path, std::string_view tmp_path) {
+  LOG(INFO) << "tmp_path: " << tmp_path;
+  LOG(INFO) << "binary_path: " << binary_path;
   Command cmd(binary_path, {},
               {absl::StrCat("CENTIPEDE_RUNNER_FLAGS=:dump_pc_table:arg1=",
                             tmp_path, ":")},
@@ -129,13 +131,18 @@ Coverage::PCTable Coverage::GetPcTableFromBinaryWithPcTable(
               << " with dump_pc_table failed: " << system_exit_code;
     return PCTable();
   }
+  LOG(INFO) << "system() for " << binary_path
+            << " with dump_pc_table succeed: " << system_exit_code;
   ByteArray pc_table_bytes;
   ReadFromLocalFile(tmp_path, pc_table_bytes);
+  //LOG(INFO) << "pc_table_bytes: " << pc_table_bytes;
   std::filesystem::remove(tmp_path);
   CHECK_EQ(pc_table_bytes.size() % sizeof(PCInfo), 0);
   size_t pc_table_size = pc_table_bytes.size() / sizeof(PCInfo);
+  LOG(INFO) << "pc_table_size: " << pc_table_size;
   PCTable pc_table(pc_table_size);
   memcpy(pc_table.data(), pc_table_bytes.data(), pc_table_bytes.size());
+  //LOG(INFO) << "pc_table_data: " << pc_table.data();
   return pc_table;
 }
 
