@@ -20,6 +20,8 @@
 #include "./feature.h"
 #include "./runner.h"
 
+#include <iostream>
+
 using centipede::state;
 using centipede::tls;
 
@@ -108,6 +110,8 @@ void __sanitizer_cov_trace_switch(uint64_t Val, uint64_t *Cases) {}
 // https://clang.llvm.org/docs/SanitizerCoverage.html#pc-table
 // This function it called at the DSO init time.
 void __sanitizer_cov_pcs_init(const uintptr_t *beg, const uintptr_t *end) {
+//  std::cerr << "beg: " << beg << "\n";
+//  std::cerr << "end: " << end << "\n";
   state.pcs_beg = beg;
   state.pcs_end = end;
 }

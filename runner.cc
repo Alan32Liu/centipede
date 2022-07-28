@@ -35,6 +35,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <iostream>
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
@@ -394,9 +395,18 @@ static int dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 // Dumps the pc table to `output_path`.
 // Assumes that main_object_start_address is already computed.
 static void DumpPcTable(const char *output_path) {
+  std::cerr << "main_object_start_address: "
+           << state.main_object_start_address << "\n";
+  std::cerr << "state.kInvalidStartAddress: "
+           << state.kInvalidStartAddress << "\n";
+  if (state.main_object_start_address == state.kInvalidStartAddress){
+    std::cerr << "main_object_start_address is not set" << "\n";
+  }
   PrintErrorAndExitIf(
       state.main_object_start_address == state.kInvalidStartAddress,
       "main_object_start_address is not set");
+
+  std::cerr << "output_file: " << output_path << "\n";
   FILE *output_file = fopen(output_path, "w");
   PrintErrorAndExitIf(!output_file, "can't open output file");
   // Make a local copy of the pc table, and subtract the ASLR base
@@ -404,9 +414,16 @@ static void DumpPcTable(const char *output_path) {
   // Otherwise, we need to pass this ASLR offset at the symbolization time,
   // e.g. via `llvm-symbolizer --adjust-vma=<ASLR offset>`.
   // Another alternative is to build the binary w/o -fPIE or with -static.
+  std::cerr << "state.pcs_beg: " << state.pcs_beg << "\n";
+  std::cerr << "state.pcs_end: " << state.pcs_end << "\n";
   const uintptr_t *data = state.pcs_beg;
   const size_t data_size_in_words = state.pcs_end - state.pcs_beg;
+  std::cerr << "data_size_in_words: " << data_size_in_words << "\n";
   const size_t data_size_in_bytes = data_size_in_words * sizeof(*state.pcs_beg);
+  std::cerr << "data_size_in_bytes: " << data_size_in_bytes << "\n";
+  if ((data_size_in_words % 2) != 0) {
+    std::cerr << "bad data_size_in_words" << "\n";
+  }
   PrintErrorAndExitIf((data_size_in_words % 2) != 0, "bad data_size_in_words");
   uintptr_t *data_copy = new uintptr_t[data_size_in_words];
   for (size_t i = 0; i < data_size_in_words; i += 2) {
@@ -418,6 +435,7 @@ static void DumpPcTable(const char *output_path) {
   // Dump the modified table.
   auto num_bytes_written =
       fwrite(data_copy, 1, data_size_in_bytes, output_file);
+  std::cerr << "num_bytes_written: " << num_bytes_written << "\n";
   PrintErrorAndExitIf(num_bytes_written != data_size_in_bytes,
                       "wrong number of bytes written for pc table");
   fclose(output_file);
