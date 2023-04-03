@@ -145,8 +145,8 @@ def centipede_fuzz_target(
             linkopts = [
                 "-ldl",
                 "-lrt",
-                "-lpthread"
-            ],
+                "-lpthread",
+            ] + linkopts,
             testonly = True,
         )
 
